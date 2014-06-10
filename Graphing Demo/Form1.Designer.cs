@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
+            this.btnGraphTickerSymbol = new System.Windows.Forms.ToolStripButton();
+            this.txtTickerSymbol = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -38,8 +39,9 @@
             // 
             this.toolStrip1.AutoSize = false;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripTextBox1});
+            this.toolStripLabel1,
+            this.txtTickerSymbol,
+            this.btnGraphTickerSymbol});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(981, 41);
@@ -47,22 +49,28 @@
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // btnGraphTickerSymbol
             // 
-            this.toolStripButton1.AutoSize = false;
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::Graphing_Demo.Properties.Resources.GraphButton;
-            this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(47, 47);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.btnGraphTickerSymbol.AutoSize = false;
+            this.btnGraphTickerSymbol.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnGraphTickerSymbol.Image = global::Graphing_Demo.Properties.Resources.GraphButton;
+            this.btnGraphTickerSymbol.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnGraphTickerSymbol.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnGraphTickerSymbol.Name = "btnGraphTickerSymbol";
+            this.btnGraphTickerSymbol.Size = new System.Drawing.Size(47, 47);
+            this.btnGraphTickerSymbol.Text = "toolStripButton1";
+            this.btnGraphTickerSymbol.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
-            // toolStripTextBox1
+            // txtTickerSymbol
             // 
-            this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 41);
+            this.txtTickerSymbol.Name = "txtTickerSymbol";
+            this.txtTickerSymbol.Size = new System.Drawing.Size(100, 41);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(131, 38);
+            this.toolStripLabel1.Text = "Ticker Symbol to Graph";
             // 
             // Form1
             // 
@@ -71,7 +79,7 @@
             this.ClientSize = new System.Drawing.Size(981, 422);
             this.Controls.Add(this.toolStrip1);
             this.IsMdiContainer = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Graphing Demo";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -84,8 +92,9 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
+        private System.Windows.Forms.ToolStripButton btnGraphTickerSymbol;
+        private System.Windows.Forms.ToolStripTextBox txtTickerSymbol;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
     }
 }
 
