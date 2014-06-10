@@ -21,21 +21,22 @@ namespace Graphing_Demo
             //create web request
             try
             {
+                SymbolData data = new SymbolData();
+                data.TickerName = ticker;
                 //first request company name
                 WebRequest companyRequest = WebRequest.Create(String.Format(CompanyNameRequestUrl, ticker));;
                 WebResponse companyResponse = companyRequest.GetResponse();
                 HttpWebResponse httpCompanyResponse = (HttpWebResponse)companyResponse;
                 String companyName = ProcessCompanyResponse(companyResponse);
                 Debug.WriteLine(String.Format("COMPANY NAME: {0}", companyName));
-
-
-                
+                data.CompanyName = companyName;
+                               
                 WebRequest symbolRequest = WebRequest.Create(String.Format(SymbolRequestUrl, ticker));
                 WebResponse symbolResponse = symbolRequest.GetResponse();
                 HttpWebResponse httpSymbolResponse = (HttpWebResponse)symbolResponse;
-                ProcessSymbolResponse(symbolResponse);
-                 
-                return new SymbolData();
+                data.Data = ProcessSymbolResponse(symbolResponse);
+
+                return data;
             }
             catch (Exception e)
             {
@@ -44,8 +45,9 @@ namespace Graphing_Demo
 
         }
 
-        private static void ProcessSymbolResponse(WebResponse symbolResponse)
+        private static List<SymbolDataEntry> ProcessSymbolResponse(WebResponse symbolResponse)
         {
+            List<SymbolDataEntry> symbolDataList = new List<SymbolDataEntry>();
             Stream dataStream = symbolResponse.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string responseFromServer = reader.ReadToEnd();
@@ -53,6 +55,28 @@ namespace Graphing_Demo
             Debug.WriteLine(responseFromServer);
             String[] rows = responseFromServer.Split('\n');
             Debug.WriteLine(rows.Length);
+            if (rows.Length > 1)
+            {
+                for (int i = 1; i < rows.Length; i++)
+                {
+                    string row = rows[i];
+                    var splitRows = row.Split(',');
+                    Debug.WriteLine(String.Format("Formatted split row has {0} elements", splitRows.Length));
+                    if (splitRows.Length == 7)
+                    {
+
+                        DateTime date = DateTime.Parse(splitRows[0]);
+                        float open = float.Parse(splitRows[1]);
+                        float high = float.Parse(splitRows[2]);
+                        float low = float.Parse(splitRows[3]);
+                        float close = float.Parse(splitRows[4]);
+                        long volume = long.Parse(splitRows[5]);
+                        float adjustedClose = float.Parse(splitRows[6]);
+                        symbolDataList.Add(new SymbolDataEntry(date, open, close, high, low, volume, adjustedClose));
+                    }
+                }
+            }
+            return symbolDataList;
         }
 
         private static string ProcessCompanyResponse(WebResponse companyResponse)
@@ -74,11 +98,6 @@ namespace Graphing_Demo
         public string TickerName;
         public string CompanyName;
         public List<SymbolDataEntry> Data;
-        
-        public SymbolData()
-        {
-            Data = new List<SymbolDataEntry>();
-        }
     }
 
     //holds each row from the CSV
