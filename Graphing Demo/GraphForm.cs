@@ -243,5 +243,10 @@ namespace Graphing_Demo
 
 
         }
+
+        private void GraphForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

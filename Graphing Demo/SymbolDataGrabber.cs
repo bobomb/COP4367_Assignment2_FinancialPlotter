@@ -61,7 +61,6 @@ namespace Graphing_Demo
                 {
                     string row = rows[i];
                     var splitRows = row.Split(',');
-                    Debug.WriteLine(String.Format("Formatted split row has {0} elements", splitRows.Length));
                     if (splitRows.Length == 7)
                     {
 
@@ -103,13 +102,13 @@ namespace Graphing_Demo
     //holds each row from the CSV
     public struct SymbolDataEntry
     {
-        DateTime Date;
-        float Open;
-        float Close;
-        float High;
-        float Low;
-        long Volume;
-        float AdjustedClose;
+        public DateTime Date;
+        public float Open;
+        public float Close;
+        public float High;
+        public float Low;
+        public long Volume;
+        public float AdjustedClose;
 
         public SymbolDataEntry(DateTime date, float open, float close, float high, float low, long volume, float adjustedClose)
         {

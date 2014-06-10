@@ -37,10 +37,11 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(516, 405);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GraphForm";
             this.Text = "GraphForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GraphForm_FormClosing);
+            this.Load += new System.EventHandler(this.GraphForm_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.GraphForm_Paint);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GraphForm_MouseClick);
             this.Resize += new System.EventHandler(this.GraphForm_Resize);

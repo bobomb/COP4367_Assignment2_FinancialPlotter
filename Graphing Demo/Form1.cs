@@ -25,6 +25,10 @@ namespace Graphing_Demo
                 SymbolData data = SymbolDataGrabber.GetSymbolData(txtTickerSymbol.Text);
                 if (data != null)
                 {
+                    StockControlForm scForm = new StockControlForm(data);
+                    scForm.MdiParent = this;
+                    scForm.Show();
+
                     GraphForm gForm = new GraphForm();
                     gForm.MdiParent = this;
 
