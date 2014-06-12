@@ -52,7 +52,7 @@
             this.labelMinX.Location = new System.Drawing.Point(35, 163);
             this.labelMinX.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelMinX.Name = "labelMinX";
-            this.labelMinX.Size = new System.Drawing.Size(75, 29);
+            this.labelMinX.Size = new System.Drawing.Size(49, 20);
             this.labelMinX.TabIndex = 1;
             this.labelMinX.Text = "Min X";
             // 
@@ -60,9 +60,9 @@
             // 
             this.textBoxMinX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxMinX.Location = new System.Drawing.Point(87, 159);
-            this.textBoxMinX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxMinX.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxMinX.Name = "textBoxMinX";
-            this.textBoxMinX.Size = new System.Drawing.Size(76, 35);
+            this.textBoxMinX.Size = new System.Drawing.Size(76, 26);
             this.textBoxMinX.TabIndex = 2;
             this.textBoxMinX.Text = "-100.0";
             this.textBoxMinX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -71,9 +71,9 @@
             // 
             this.textBoxMaxX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxMaxX.Location = new System.Drawing.Point(396, 159);
-            this.textBoxMaxX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxMaxX.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxMaxX.Name = "textBoxMaxX";
-            this.textBoxMaxX.Size = new System.Drawing.Size(76, 35);
+            this.textBoxMaxX.Size = new System.Drawing.Size(76, 26);
             this.textBoxMaxX.TabIndex = 4;
             this.textBoxMaxX.Text = "350.0";
             this.textBoxMaxX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -85,7 +85,7 @@
             this.labelMaxX.Location = new System.Drawing.Point(348, 163);
             this.labelMaxX.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelMaxX.Name = "labelMaxX";
-            this.labelMaxX.Size = new System.Drawing.Size(80, 29);
+            this.labelMaxX.Size = new System.Drawing.Size(53, 20);
             this.labelMaxX.TabIndex = 3;
             this.labelMaxX.Text = "Max X";
             // 
@@ -93,12 +93,13 @@
             // 
             this.textBoxMaxY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxMaxY.Location = new System.Drawing.Point(239, 25);
-            this.textBoxMaxY.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxMaxY.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxMaxY.Name = "textBoxMaxY";
-            this.textBoxMaxY.Size = new System.Drawing.Size(76, 35);
+            this.textBoxMaxY.Size = new System.Drawing.Size(76, 26);
             this.textBoxMaxY.TabIndex = 6;
             this.textBoxMaxY.Text = "350.0";
             this.textBoxMaxY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxMaxY.TextChanged += new System.EventHandler(this.textBoxMaxY_TextChanged);
             // 
             // labelMaxY
             // 
@@ -107,7 +108,7 @@
             this.labelMaxY.Location = new System.Drawing.Point(191, 29);
             this.labelMaxY.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelMaxY.Name = "labelMaxY";
-            this.labelMaxY.Size = new System.Drawing.Size(79, 29);
+            this.labelMaxY.Size = new System.Drawing.Size(53, 20);
             this.labelMaxY.TabIndex = 5;
             this.labelMaxY.Text = "Max Y";
             // 
@@ -115,9 +116,9 @@
             // 
             this.textBoxMinY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxMinY.Location = new System.Drawing.Point(239, 303);
-            this.textBoxMinY.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxMinY.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxMinY.Name = "textBoxMinY";
-            this.textBoxMinY.Size = new System.Drawing.Size(76, 35);
+            this.textBoxMinY.Size = new System.Drawing.Size(76, 26);
             this.textBoxMinY.TabIndex = 8;
             this.textBoxMinY.Text = "-100.0";
             this.textBoxMinY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -129,7 +130,7 @@
             this.labelMinY.Location = new System.Drawing.Point(196, 307);
             this.labelMinY.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelMinY.Name = "labelMinY";
-            this.labelMinY.Size = new System.Drawing.Size(74, 29);
+            this.labelMinY.Size = new System.Drawing.Size(49, 20);
             this.labelMinY.TabIndex = 7;
             this.labelMinY.Text = "Min Y";
             // 
@@ -139,9 +140,9 @@
             this.checkBoxGridLines.Checked = true;
             this.checkBoxGridLines.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxGridLines.Location = new System.Drawing.Point(36, 269);
-            this.checkBoxGridLines.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxGridLines.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxGridLines.Name = "checkBoxGridLines";
-            this.checkBoxGridLines.Size = new System.Drawing.Size(80, 21);
+            this.checkBoxGridLines.Size = new System.Drawing.Size(73, 17);
             this.checkBoxGridLines.TabIndex = 9;
             this.checkBoxGridLines.Text = "Grid Lines";
             this.checkBoxGridLines.UseVisualStyleBackColor = true;
@@ -153,9 +154,9 @@
             this.checkBoxDrawAxes.Checked = true;
             this.checkBoxDrawAxes.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDrawAxes.Location = new System.Drawing.Point(36, 287);
-            this.checkBoxDrawAxes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxDrawAxes.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxDrawAxes.Name = "checkBoxDrawAxes";
-            this.checkBoxDrawAxes.Size = new System.Drawing.Size(56, 21);
+            this.checkBoxDrawAxes.Size = new System.Drawing.Size(49, 17);
             this.checkBoxDrawAxes.TabIndex = 10;
             this.checkBoxDrawAxes.Text = "Axes";
             this.checkBoxDrawAxes.UseVisualStyleBackColor = true;
@@ -167,9 +168,9 @@
             this.checkBoxKeepAspectRatio.Checked = true;
             this.checkBoxKeepAspectRatio.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxKeepAspectRatio.Location = new System.Drawing.Point(36, 305);
-            this.checkBoxKeepAspectRatio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxKeepAspectRatio.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxKeepAspectRatio.Name = "checkBoxKeepAspectRatio";
-            this.checkBoxKeepAspectRatio.Size = new System.Drawing.Size(94, 21);
+            this.checkBoxKeepAspectRatio.Size = new System.Drawing.Size(87, 17);
             this.checkBoxKeepAspectRatio.TabIndex = 11;
             this.checkBoxKeepAspectRatio.Text = "Aspect Ratio";
             this.checkBoxKeepAspectRatio.UseVisualStyleBackColor = true;
@@ -179,7 +180,7 @@
             // 
             this.buttonReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonReset.Location = new System.Drawing.Point(196, 155);
-            this.buttonReset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonReset.Margin = new System.Windows.Forms.Padding(2);
             this.buttonReset.Name = "buttonReset";
             this.buttonReset.Size = new System.Drawing.Size(119, 37);
             this.buttonReset.TabIndex = 12;
@@ -196,7 +197,7 @@
             0,
             65536});
             this.numericUpDownGraphPenWidth.Location = new System.Drawing.Point(373, 262);
-            this.numericUpDownGraphPenWidth.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDownGraphPenWidth.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDownGraphPenWidth.Minimum = new decimal(new int[] {
             1,
             0,
@@ -242,7 +243,7 @@
             this.Controls.Add(this.textBoxMinX);
             this.Controls.Add(this.labelMinX);
             this.Location = new System.Drawing.Point(750, 0);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GraphControlForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "GraphControlForm";

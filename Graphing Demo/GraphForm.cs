@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -14,51 +15,36 @@ namespace Graphing_Demo
     public partial class GraphForm : Form
     {
         Random random = new Random();
-    
-         SymbolData stockSymbolData;
-        
-        public GraphForm(SymbolData data)
-        {
-            stockSymbolData = data;
-            InitializeComponent();
-            startDatePicker.MinDate = stockSymbolData.Data.Last().Date;
-            startDatePicker.MaxDate = stockSymbolData.Data.First().Date;
-            endDatePicker.MaxDate = stockSymbolData.Data.First().Date;
-            this.Text = data.TickerName + " - " + data.CompanyName;
-        }
-
-
+        bool IsInitialized = false;
+        SymbolData stockSymbolData;
         Pen lightGrayPen = new Pen(Color.LightGray, 0.5f);
         Pen blackPen = new Pen(Color.Black, 1f);
         Pen redPen = new Pen(Color.Red, 1f);
         Font arialFont = new Font("Arial", 10);
         Font tnrFont = new Font("Times New Roman", 10);
         Font tnrFont20 = new Font("Times New Roman", 20);
+        T_Transform tTransform = new T_Transform();
+        
+        public GraphForm(SymbolData data)
+        {
+            stockSymbolData = data;
+            InitializeComponent();
+            
+            startDatePicker.MinDate = stockSymbolData.Data.Last().Date;
+            startDatePicker.MaxDate = stockSymbolData.Data.First().Date;
+            endDatePicker.MinDate = startDatePicker.MinDate.AddDays(1);
+            endDatePicker.MaxDate = stockSymbolData.Data.First().Date;
+            //set start day to 30 days before the end, and the end to the end
+            startDatePicker.Value = startDatePicker.MaxDate.Subtract(new TimeSpan(30, 0, 0, 0));
+            
+            //change name
+            this.Text = data.TickerName + " - " + data.CompanyName;
+            IsInitialized = true;
+            RecalculateGraphBounds();
+        }
         Matrix identityMatrix = new Matrix();
 
         PointF origin = new PointF();
-
-        public PointF randPointF(float minX, float maxX, float minY, float maxY)
-        {
-            return new PointF(randFloat(minX, maxX), randFloat(minY,maxY));
-        }
-
-
-        public float randFloat()
-        {
-            return (float)random.NextDouble();
-        }
-
-        public float randFloat(float max)
-        {
-            return randFloat() * max;
-        }
-
-        public float randFloat(float min,float max)
-        {
-            return randFloat(max-min) + min;
-        }
-
 
         private void drawCircle(Graphics g, Pen pen, PointF center, float radius)
         {
@@ -73,77 +59,15 @@ namespace Graphing_Demo
             return pf;
         }
 
-        private void drawGrid(Graphics g)
-        {
 
-            if (graphControlForm.showGrid)
-            {
-
-                float xInc = (float)Math.Pow(10.0, Math.Floor(Math.Log10(tTransform.xRange)) -1);
-
-                for (float x = 0f; x > tTransform.X1; x -= xInc)
-                {
-                    g.DrawLine(lightGrayPen, x, tTransform.Y1, x, tTransform.Y2);
-                }
-
-                for (float x = 0f; x < tTransform.X2; x += xInc)
-                {
-                    g.DrawLine(lightGrayPen, x, tTransform.Y1, x, tTransform.Y2);
-                }
-                float yInc = (float)Math.Pow(10.0, Math.Floor(Math.Log10(tTransform.yRange)) -1);
-
-                for (float y = 0f; y < tTransform.Y1; y += yInc)
-                {
-                    g.DrawLine(lightGrayPen, tTransform.X1, y, tTransform.X2, y);
-                }
-
-                for (float y = 0f; y > tTransform.Y2; y -= yInc)
-                {
-                    g.DrawLine(lightGrayPen, tTransform.X1, y, tTransform.X2, y);
-                }
-            }
-        }
-
-        private void drawAxes(PaintEventArgs e)
-        {
-            if (graphControlForm.showAxes)
-            {
-                e.Graphics.DrawLine(blackPen, 0f, graphControlForm.maxY, 0f, graphControlForm.minY);
-                e.Graphics.DrawLine(blackPen, graphControlForm.maxX, 0f, graphControlForm.minX, 0f);
-            }
-        }
-
-        T_Transform tTransform = new T_Transform();
-        
-        private void SetGraphingTransform(PaintEventArgs e)
-        {
-            Rectangle winRect = this.ClientRectangle;
-            Rectangle subWinRect = winRect;
-
-            float u1 = subWinRect.X;
-            float v1 = subWinRect.Y;
-            float u2 = subWinRect.X + subWinRect.Width;
-            float v2 = subWinRect.Y + subWinRect.Height;
-
-            float x1 = graphControlForm.minX;
-            float y1 = graphControlForm.maxY;
-            float x2 = graphControlForm.maxX;
-            float y2 = graphControlForm.minY;
-
-            tTransform.setupBoundries(u1, v1, u2, v2, x1, y1, x2, y2);
-            tTransform.setupMatrix(graphControlForm.aspectRatio);
-
-
-            //Matrix matrix = new Matrix();
-
-            //matrix.Scale(10f, -10f);
-
-            //matrix.Translate(-200f, -200f);
-
-
-            ////e.Graphics.Transform = matrix;
-            e.Graphics.Transform = tTransform.matrix;
-        }
+        //private void drawAxes(PaintEventArgs e)
+        //{
+        //    if (graphControlForm.showAxes)
+        //    {
+        //        e.Graphics.DrawLine(blackPen, 0f, graphControlForm.maxY, 0f, graphControlForm.minY);
+        //        e.Graphics.DrawLine(blackPen, graphControlForm.maxX, 0f, graphControlForm.minX, 0f);
+        //    }
+        //}
 
         private void GraphForm_Resize(object sender, EventArgs e)
         {
@@ -154,19 +78,12 @@ namespace Graphing_Demo
 
         private void GraphForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            alreadyClosing = true;
-            if (!graphControlForm.alreadyClosing)
-            {
-                graphControlForm.Close();
-            }
         }
 
         private void GraphForm_MouseClick(object sender, MouseEventArgs e)
         {
             int mouseX = e.X;
             int mouseY = e.Y;
-
-
         }
 
 
@@ -182,43 +99,32 @@ namespace Graphing_Demo
 
         private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
         {
-
-            SetGraphingTransform(e);
-
+            e.Graphics.Transform = tTransform.matrix;
             PointF pf = new PointF(-25f, -25f);
 
             pf = markPoint(e.Graphics, pf, 60f);
 
 
-            drawGrid(e.Graphics);
+            //drawGrid(e.Graphics);
 
-            drawAxes(e);
+            //drawAxes(e);
 
             drawCircle(e.Graphics, blackPen, origin, 25f);
             //e.Graphics.DrawEllipse(blackPen, -25f, 25f, 50f, -50f);
 
             drawCircle(e.Graphics, redPen, origin, 10f);
-            //e.Graphics.DrawEllipse(redPen, -10f, -10f, 20f, 20f);
-
-
-            e.Graphics.DrawLine(blackPen, -5f, 0f, 5f, 0f);
-            e.Graphics.DrawLine(blackPen, 0f, -5f, 0f, 5f);
-
-            e.Graphics.DrawLine(redPen, -5f, 50f, 5f, 50f);
-            e.Graphics.DrawLine(redPen, 0f, 45f, 0f, 55f);
-
-
-
 
             PointF p100100 = new PointF(100f, 100f);
-            PointF p200200 = new PointF(200f, 200f);
+            PointF p500500 = new PointF(500f, 500f);
 
-            PointF p150150 = new PointF(150f, 150f);
+            e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkRed, p100100);
+            markPoint(e.Graphics, p100100);
 
-            e.Graphics.DrawString("(150,150)", arialFont, Brushes.DarkRed, p150150);
-            markPoint(e.Graphics, p150150);
+            e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkRed, p500500);
+            markPoint(e.Graphics, p500500);
 
-            Pen graphPen = new Pen(Color.Black, graphControlForm.graphPenWidth);
+            /*
+            Pen graphPen = new Pen(Color.Black, 3);
 
             List<PointF> pointFL = new List<PointF>();
 
@@ -236,23 +142,47 @@ namespace Graphing_Demo
 
             e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkRed, p100100);
             e.Graphics.DrawString("(200,200)", tnrFont, Brushes.DarkRed, p200200);
-
+            /*
             e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkBlue, tTransform.convertToUV(p100100));
             markPoint(e.Graphics, tTransform.convertToUV(p100100), 20f);
             e.Graphics.DrawString("(200,200)", tnrFont, Brushes.DarkBlue, tTransform.convertToUV(p200200));
             markPoint(e.Graphics, tTransform.convertToUV(p200200), 20f);
+            */
+            
 
-            List<PointF> polyPoints = new List<PointF>();
+        }
 
-            for (int i = 0; i < 50; i++)
+        private void startDatePicker_ValueChanged_1(object sender, EventArgs e)
+        {
+            Debug.WriteLine("start change");
+           // RecalculateGraphBounds();
+        }
+
+        private void RecalculateGraphBounds()
+        {
+            if (IsInitialized)
             {
-                polyPoints.Add(randPointF(100, 200, 200, 300));
+                Rectangle subWinRect = splitContainer1.Panel1.ClientRectangle;
+
+                float u1 = subWinRect.X;
+                float v1 = subWinRect.Y;
+                float u2 = subWinRect.X + subWinRect.Width;
+                float v2 = subWinRect.Y + subWinRect.Height;
+
+                float x1 = startDatePicker.Value.DayOfYear; // graphControlForm.minX;
+                float y1 = 0; //graphControlForm.maxY;
+                float x2 = endDatePicker.Value.DayOfYear; //graphControlForm.maxX;
+                float y2 = 1000; //graphControlForm.minY;
+
+                tTransform.setupBoundries(u1, v1, u2, v2, x1, y1, x2, y2);
+                tTransform.setupMatrix(false);
             }
+        }
 
-            e.Graphics.Transform = tTransform.matrix;
-
-            e.Graphics.DrawPolygon(blackPen, polyPoints.ToArray());
-
+        private void endDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+           // RecalculateGraphBounds();
+            Debug.WriteLine("end change");
         }
     }
 }

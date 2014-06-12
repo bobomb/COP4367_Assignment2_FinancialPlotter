@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Reflection;
 namespace Graphing_Demo
 {
     /// <summary>
@@ -44,7 +45,44 @@ namespace Graphing_Demo
             }
 
         }
+        public static SymbolData GetTestData()
+        {
+            
+            SymbolData data = new SymbolData();
+            data.TickerName = "TEST";
+            data.CompanyName = "TEST COMPANY";
+            
+            List<SymbolDataEntry> symbolDataList = new List<SymbolDataEntry>();
+            Stream dataStream = File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "table.csv");
+            StreamReader reader = new StreamReader(dataStream);
+            string responseFromServer = reader.ReadToEnd();
+            Debug.WriteLine(responseFromServer);
+            String[] rows = responseFromServer.Split('\n');
+            Debug.WriteLine(rows.Length);
+            if (rows.Length > 1)
+            {
+                for (int i = 1; i < rows.Length; i++)
+                {
+                    string row = rows[i];
+                    var splitRows = row.Split(',');
+                    if (splitRows.Length == 7)
+                    {
 
+                        DateTime date = DateTime.Parse(splitRows[0]);
+                        float open = float.Parse(splitRows[1]);
+                        float high = float.Parse(splitRows[2]);
+                        float low = float.Parse(splitRows[3]);
+                        float close = float.Parse(splitRows[4]);
+                        long volume = long.Parse(splitRows[5]);
+                        float adjustedClose = float.Parse(splitRows[6]);
+                        symbolDataList.Add(new SymbolDataEntry(date, open, close, high, low, volume, adjustedClose));
+                    }
+                }
+            }
+            data.Data = symbolDataList;
+            return data;
+            
+        }
         private static List<SymbolDataEntry> ProcessSymbolResponse(WebResponse symbolResponse)
         {
             List<SymbolDataEntry> symbolDataList = new List<SymbolDataEntry>();

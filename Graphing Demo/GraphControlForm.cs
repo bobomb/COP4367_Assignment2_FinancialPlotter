@@ -88,6 +88,11 @@ namespace Graphing_Demo
             graphForm.Invalidate();
         }
 
+        private void textBoxMaxY_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
 
 
     }

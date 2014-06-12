@@ -22,10 +22,11 @@ namespace Graphing_Demo
             if (txtTickerSymbol.Text.Length > 0)
             {
                 //grab the ticker symbol data
-                SymbolData data = SymbolDataGrabber.GetSymbolData(txtTickerSymbol.Text);
-                if (data != null)
+                //SymbolData data = SymbolDataGrabber.GetSymbolData(txtTickerSymbol.Text);
+               // if (data != null)
                 {
-                    GraphForm gForm = new GraphForm(data);
+                    //GraphForm gForm = new GraphForm(data);
+                    GraphForm gForm = new GraphForm(SymbolDataGrabber.GetTestData());
                     gForm.MdiParent = this;
                     gForm.Show();
 

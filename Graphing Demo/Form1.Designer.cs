@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.btnGraphTickerSymbol = new System.Windows.Forms.ToolStripButton();
-            this.txtTickerSymbol = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.txtTickerSymbol = new System.Windows.Forms.ToolStripTextBox();
+            this.btnGraphTickerSymbol = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,6 +49,17 @@
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(131, 38);
+            this.toolStripLabel1.Text = "Ticker Symbol to Graph";
+            // 
+            // txtTickerSymbol
+            // 
+            this.txtTickerSymbol.Name = "txtTickerSymbol";
+            this.txtTickerSymbol.Size = new System.Drawing.Size(100, 41);
+            // 
             // btnGraphTickerSymbol
             // 
             this.btnGraphTickerSymbol.AutoSize = false;
@@ -61,17 +72,6 @@
             this.btnGraphTickerSymbol.Text = "toolStripButton1";
             this.btnGraphTickerSymbol.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
-            // txtTickerSymbol
-            // 
-            this.txtTickerSymbol.Name = "txtTickerSymbol";
-            this.txtTickerSymbol.Size = new System.Drawing.Size(100, 41);
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(131, 38);
-            this.toolStripLabel1.Text = "Ticker Symbol to Graph";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -82,7 +82,6 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Graphing Demo";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);

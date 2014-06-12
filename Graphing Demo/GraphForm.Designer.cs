@@ -33,6 +33,9 @@
             this.endDatePicker = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.startDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.radioCandleSticks = new System.Windows.Forms.RadioButton();
+            this.radioQuadGraph = new System.Windows.Forms.RadioButton();
+            this.radioCloseGraph = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -40,7 +43,10 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -50,6 +56,9 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.radioCloseGraph);
+            this.splitContainer1.Panel2.Controls.Add(this.radioQuadGraph);
+            this.splitContainer1.Panel2.Controls.Add(this.radioCandleSticks);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.Controls.Add(this.endDatePicker);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
@@ -73,6 +82,7 @@
             this.endDatePicker.Name = "endDatePicker";
             this.endDatePicker.Size = new System.Drawing.Size(200, 20);
             this.endDatePicker.TabIndex = 6;
+            this.endDatePicker.ValueChanged += new System.EventHandler(this.endDatePicker_ValueChanged);
             // 
             // label1
             // 
@@ -89,6 +99,39 @@
             this.startDatePicker.Name = "startDatePicker";
             this.startDatePicker.Size = new System.Drawing.Size(200, 20);
             this.startDatePicker.TabIndex = 4;
+            this.startDatePicker.ValueChanged += new System.EventHandler(this.startDatePicker_ValueChanged_1);
+            // 
+            // radioCandleSticks
+            // 
+            this.radioCandleSticks.AutoSize = true;
+            this.radioCandleSticks.Location = new System.Drawing.Point(18, 91);
+            this.radioCandleSticks.Name = "radioCandleSticks";
+            this.radioCandleSticks.Size = new System.Drawing.Size(88, 17);
+            this.radioCandleSticks.TabIndex = 8;
+            this.radioCandleSticks.Text = "Candle sticks";
+            this.radioCandleSticks.UseVisualStyleBackColor = true;
+            // 
+            // radioQuadGraph
+            // 
+            this.radioQuadGraph.AutoSize = true;
+            this.radioQuadGraph.Location = new System.Drawing.Point(18, 115);
+            this.radioQuadGraph.Name = "radioQuadGraph";
+            this.radioQuadGraph.Size = new System.Drawing.Size(122, 17);
+            this.radioQuadGraph.TabIndex = 9;
+            this.radioQuadGraph.Text = "Hi/Low/Open/Close";
+            this.radioQuadGraph.UseVisualStyleBackColor = true;
+            // 
+            // radioCloseGraph
+            // 
+            this.radioCloseGraph.AutoSize = true;
+            this.radioCloseGraph.Checked = true;
+            this.radioCloseGraph.Location = new System.Drawing.Point(18, 138);
+            this.radioCloseGraph.Name = "radioCloseGraph";
+            this.radioCloseGraph.Size = new System.Drawing.Size(75, 17);
+            this.radioCloseGraph.TabIndex = 10;
+            this.radioCloseGraph.TabStop = true;
+            this.radioCloseGraph.Text = "Only Close";
+            this.radioCloseGraph.UseVisualStyleBackColor = true;
             // 
             // GraphForm
             // 
@@ -120,5 +163,8 @@
         private System.Windows.Forms.DateTimePicker endDatePicker;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker startDatePicker;
+        private System.Windows.Forms.RadioButton radioCloseGraph;
+        private System.Windows.Forms.RadioButton radioQuadGraph;
+        private System.Windows.Forms.RadioButton radioCandleSticks;
     }
 }
