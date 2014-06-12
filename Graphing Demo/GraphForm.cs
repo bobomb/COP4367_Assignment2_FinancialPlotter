@@ -14,17 +14,17 @@ namespace Graphing_Demo
     public partial class GraphForm : Form
     {
         Random random = new Random();
-        public GraphControlForm graphControlForm
-        {
-            set{_graphControlForm=value;}
-            get{return _graphControlForm;}
-        }
-
     
-        GraphControlForm _graphControlForm;
-        public GraphForm()
+         SymbolData stockSymbolData;
+        
+        public GraphForm(SymbolData data)
         {
+            stockSymbolData = data;
             InitializeComponent();
+            startDatePicker.MinDate = stockSymbolData.Data.Last().Date;
+            startDatePicker.MaxDate = stockSymbolData.Data.First().Date;
+            endDatePicker.MaxDate = stockSymbolData.Data.First().Date;
+            this.Text = data.TickerName + " - " + data.CompanyName;
         }
 
 
@@ -37,81 +37,6 @@ namespace Graphing_Demo
         Matrix identityMatrix = new Matrix();
 
         PointF origin = new PointF();
-
-
-        private void GraphForm_Paint(object sender, PaintEventArgs e)
-        {
-            SetGraphingTransform(e);
-
-            PointF pf = new PointF(-25f, -25f);
-
-            pf = markPoint(e.Graphics, pf,60f);
-
-
-            drawGrid(e.Graphics);
-
-            drawAxes(e);
-
-            drawCircle(e.Graphics, blackPen, origin, 25f);
-            //e.Graphics.DrawEllipse(blackPen, -25f, 25f, 50f, -50f);
-
-            drawCircle(e.Graphics, redPen, origin, 10f);
-            //e.Graphics.DrawEllipse(redPen, -10f, -10f, 20f, 20f);
-
-
-            e.Graphics.DrawLine(blackPen, -5f, 0f, 5f, 0f);
-            e.Graphics.DrawLine(blackPen, 0f, -5f, 0f, 5f);
-
-            e.Graphics.DrawLine(redPen, -5f, 50f, 5f, 50f);
-            e.Graphics.DrawLine(redPen, 0f, 45f, 0f, 55f);
-
-
-
-
-            PointF p100100 = new PointF(100f, 100f);
-            PointF p200200 = new PointF(200f, 200f);
-
-            PointF p150150 = new PointF(150f, 150f);
-
-            e.Graphics.DrawString("(150,150)", arialFont, Brushes.DarkRed, p150150);
-            markPoint(e.Graphics, p150150);
-
-            Pen graphPen = new Pen(Color.Black, graphControlForm.graphPenWidth);
-
-            List<PointF> pointFL=new List<PointF>();
-                      
-            for (float x = tTransform.X1; x < tTransform.X2; x += 0.01f)
-            {
-                float y=(float)Math.Sin(x*0.02)*x*0.5f;
-                pointFL.Add(new PointF(x,y));              
-            }
-
-            e.Graphics.DrawLines(graphPen, pointFL.ToArray());
-            
-            e.Graphics.Transform = identityMatrix;
-
-            e.Graphics.DrawString("y = sin(x*0.02)*x*0.5", tnrFont20, Brushes.RoyalBlue, tTransform.convertToUV(-90f, -40f));
-
-            e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkRed, p100100);
-            e.Graphics.DrawString("(200,200)", tnrFont, Brushes.DarkRed, p200200);
-
-            e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkBlue, tTransform.convertToUV(p100100));
-            markPoint(e.Graphics, tTransform.convertToUV(p100100),20f);
-            e.Graphics.DrawString("(200,200)", tnrFont, Brushes.DarkBlue, tTransform.convertToUV(p200200));
-            markPoint(e.Graphics, tTransform.convertToUV(p200200), 20f);
-
-            List<PointF> polyPoints = new List<PointF>();
-
-            for (int i = 0; i < 50; i++)
-            {
-                polyPoints.Add(randPointF(100, 200, 200, 300));
-            }
-
-            e.Graphics.Transform = tTransform.matrix;
-
-            e.Graphics.DrawPolygon(blackPen, polyPoints.ToArray());
-
-        }
 
         public PointF randPointF(float minX, float maxX, float minY, float maxY)
         {
@@ -244,8 +169,89 @@ namespace Graphing_Demo
 
         }
 
+
+        private void startDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            endDatePicker.MinDate = startDatePicker.Value;
+        }
+
         private void GraphForm_Load(object sender, EventArgs e)
         {
+
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+            SetGraphingTransform(e);
+
+            PointF pf = new PointF(-25f, -25f);
+
+            pf = markPoint(e.Graphics, pf, 60f);
+
+
+            drawGrid(e.Graphics);
+
+            drawAxes(e);
+
+            drawCircle(e.Graphics, blackPen, origin, 25f);
+            //e.Graphics.DrawEllipse(blackPen, -25f, 25f, 50f, -50f);
+
+            drawCircle(e.Graphics, redPen, origin, 10f);
+            //e.Graphics.DrawEllipse(redPen, -10f, -10f, 20f, 20f);
+
+
+            e.Graphics.DrawLine(blackPen, -5f, 0f, 5f, 0f);
+            e.Graphics.DrawLine(blackPen, 0f, -5f, 0f, 5f);
+
+            e.Graphics.DrawLine(redPen, -5f, 50f, 5f, 50f);
+            e.Graphics.DrawLine(redPen, 0f, 45f, 0f, 55f);
+
+
+
+
+            PointF p100100 = new PointF(100f, 100f);
+            PointF p200200 = new PointF(200f, 200f);
+
+            PointF p150150 = new PointF(150f, 150f);
+
+            e.Graphics.DrawString("(150,150)", arialFont, Brushes.DarkRed, p150150);
+            markPoint(e.Graphics, p150150);
+
+            Pen graphPen = new Pen(Color.Black, graphControlForm.graphPenWidth);
+
+            List<PointF> pointFL = new List<PointF>();
+
+            for (float x = tTransform.X1; x < tTransform.X2; x += 0.01f)
+            {
+                float y = (float)Math.Sin(x * 0.02) * x * 0.5f;
+                pointFL.Add(new PointF(x, y));
+            }
+
+            e.Graphics.DrawLines(graphPen, pointFL.ToArray());
+
+            e.Graphics.Transform = identityMatrix;
+
+            e.Graphics.DrawString("y = sin(x*0.02)*x*0.5", tnrFont20, Brushes.RoyalBlue, tTransform.convertToUV(-90f, -40f));
+
+            e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkRed, p100100);
+            e.Graphics.DrawString("(200,200)", tnrFont, Brushes.DarkRed, p200200);
+
+            e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkBlue, tTransform.convertToUV(p100100));
+            markPoint(e.Graphics, tTransform.convertToUV(p100100), 20f);
+            e.Graphics.DrawString("(200,200)", tnrFont, Brushes.DarkBlue, tTransform.convertToUV(p200200));
+            markPoint(e.Graphics, tTransform.convertToUV(p200200), 20f);
+
+            List<PointF> polyPoints = new List<PointF>();
+
+            for (int i = 0; i < 50; i++)
+            {
+                polyPoints.Add(randPointF(100, 200, 200, 300));
+            }
+
+            e.Graphics.Transform = tTransform.matrix;
+
+            e.Graphics.DrawPolygon(blackPen, polyPoints.ToArray());
 
         }
     }
