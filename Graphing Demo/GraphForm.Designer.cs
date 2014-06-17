@@ -28,14 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.radioCloseGraph = new System.Windows.Forms.RadioButton();
+            this.radioQuadGraph = new System.Windows.Forms.RadioButton();
+            this.radioCandleSticks = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
             this.endDatePicker = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.startDatePicker = new System.Windows.Forms.DateTimePicker();
-            this.radioCandleSticks = new System.Windows.Forms.RadioButton();
-            this.radioQuadGraph = new System.Windows.Forms.RadioButton();
-            this.radioCloseGraph = new System.Windows.Forms.RadioButton();
+            this.invalidateTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -66,6 +68,38 @@
             this.splitContainer1.Size = new System.Drawing.Size(776, 464);
             this.splitContainer1.SplitterDistance = 474;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // radioCloseGraph
+            // 
+            this.radioCloseGraph.AutoSize = true;
+            this.radioCloseGraph.Checked = true;
+            this.radioCloseGraph.Location = new System.Drawing.Point(18, 83);
+            this.radioCloseGraph.Name = "radioCloseGraph";
+            this.radioCloseGraph.Size = new System.Drawing.Size(75, 17);
+            this.radioCloseGraph.TabIndex = 10;
+            this.radioCloseGraph.TabStop = true;
+            this.radioCloseGraph.Text = "Only Close";
+            this.radioCloseGraph.UseVisualStyleBackColor = true;
+            // 
+            // radioQuadGraph
+            // 
+            this.radioQuadGraph.AutoSize = true;
+            this.radioQuadGraph.Location = new System.Drawing.Point(18, 129);
+            this.radioQuadGraph.Name = "radioQuadGraph";
+            this.radioQuadGraph.Size = new System.Drawing.Size(122, 17);
+            this.radioQuadGraph.TabIndex = 9;
+            this.radioQuadGraph.Text = "Hi/Low/Open/Close";
+            this.radioQuadGraph.UseVisualStyleBackColor = true;
+            // 
+            // radioCandleSticks
+            // 
+            this.radioCandleSticks.AutoSize = true;
+            this.radioCandleSticks.Location = new System.Drawing.Point(18, 106);
+            this.radioCandleSticks.Name = "radioCandleSticks";
+            this.radioCandleSticks.Size = new System.Drawing.Size(88, 17);
+            this.radioCandleSticks.TabIndex = 8;
+            this.radioCandleSticks.Text = "Candle sticks";
+            this.radioCandleSticks.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -99,39 +133,13 @@
             this.startDatePicker.Name = "startDatePicker";
             this.startDatePicker.Size = new System.Drawing.Size(200, 20);
             this.startDatePicker.TabIndex = 4;
-            this.startDatePicker.ValueChanged += new System.EventHandler(this.startDatePicker_ValueChanged_1);
+            this.startDatePicker.ValueChanged += new System.EventHandler(this.startDatePicker_ValueChanged);
             // 
-            // radioCandleSticks
+            // invalidateTimer
             // 
-            this.radioCandleSticks.AutoSize = true;
-            this.radioCandleSticks.Location = new System.Drawing.Point(18, 91);
-            this.radioCandleSticks.Name = "radioCandleSticks";
-            this.radioCandleSticks.Size = new System.Drawing.Size(88, 17);
-            this.radioCandleSticks.TabIndex = 8;
-            this.radioCandleSticks.Text = "Candle sticks";
-            this.radioCandleSticks.UseVisualStyleBackColor = true;
-            // 
-            // radioQuadGraph
-            // 
-            this.radioQuadGraph.AutoSize = true;
-            this.radioQuadGraph.Location = new System.Drawing.Point(18, 115);
-            this.radioQuadGraph.Name = "radioQuadGraph";
-            this.radioQuadGraph.Size = new System.Drawing.Size(122, 17);
-            this.radioQuadGraph.TabIndex = 9;
-            this.radioQuadGraph.Text = "Hi/Low/Open/Close";
-            this.radioQuadGraph.UseVisualStyleBackColor = true;
-            // 
-            // radioCloseGraph
-            // 
-            this.radioCloseGraph.AutoSize = true;
-            this.radioCloseGraph.Checked = true;
-            this.radioCloseGraph.Location = new System.Drawing.Point(18, 138);
-            this.radioCloseGraph.Name = "radioCloseGraph";
-            this.radioCloseGraph.Size = new System.Drawing.Size(75, 17);
-            this.radioCloseGraph.TabIndex = 10;
-            this.radioCloseGraph.TabStop = true;
-            this.radioCloseGraph.Text = "Only Close";
-            this.radioCloseGraph.UseVisualStyleBackColor = true;
+            this.invalidateTimer.Enabled = true;
+            this.invalidateTimer.Interval = 10;
+            this.invalidateTimer.Tick += new System.EventHandler(this.invalidateTimer_Tick);
             // 
             // GraphForm
             // 
@@ -145,7 +153,6 @@
             this.Name = "GraphForm";
             this.Text = "GraphForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GraphForm_FormClosing);
-            this.Load += new System.EventHandler(this.GraphForm_Load);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GraphForm_MouseClick);
             this.Resize += new System.EventHandler(this.GraphForm_Resize);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -166,5 +173,6 @@
         private System.Windows.Forms.RadioButton radioCloseGraph;
         private System.Windows.Forms.RadioButton radioQuadGraph;
         private System.Windows.Forms.RadioButton radioCandleSticks;
+        private System.Windows.Forms.Timer invalidateTimer;
     }
 }

@@ -50,12 +50,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GraphControlForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GraphControlForm.Designer.cs">
-      <DependentUpon>GraphControlForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="GraphForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,9 +62,6 @@
     <Compile Include="T_Transform.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GraphControlForm.resx">
-      <DependentUpon>GraphControlForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GraphForm.resx">
       <DependentUpon>GraphForm.cs</DependentUpon>

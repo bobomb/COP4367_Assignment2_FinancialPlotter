@@ -17,13 +17,20 @@ namespace Graphing_Demo
         Random random = new Random();
         bool IsInitialized = false;
         SymbolData stockSymbolData;
+        T_Transform tTransform = new T_Transform();
+        Panel graphPanel;
+        List<SymbolDataEntry> currentRangeData = new List<SymbolDataEntry>();
+
+
         Pen lightGrayPen = new Pen(Color.LightGray, 0.5f);
         Pen blackPen = new Pen(Color.Black, 1f);
         Pen redPen = new Pen(Color.Red, 1f);
-        Font arialFont = new Font("Arial", 10);
+        Font arialFont = new Font("Arial", 10f);
         Font tnrFont = new Font("Times New Roman", 10);
         Font tnrFont20 = new Font("Times New Roman", 20);
-        T_Transform tTransform = new T_Transform();
+        Matrix identityMatrix = new Matrix();
+
+        PointF origin = new PointF();
         
         public GraphForm(SymbolData data)
         {
@@ -41,17 +48,19 @@ namespace Graphing_Demo
             this.Text = data.TickerName + " - " + data.CompanyName;
             IsInitialized = true;
             RecalculateGraphBounds();
-        }
-        Matrix identityMatrix = new Matrix();
 
-        PointF origin = new PointF();
+            graphPanel = splitContainer1.Panel1;
+        }
+
 
         private void drawCircle(Graphics g, Pen pen, PointF center, float radius)
         {
             g.DrawEllipse(pen, center.X - radius, center.Y - radius, radius * 2f, radius * 2f);
         }
 
-        private PointF markPoint(Graphics g, PointF pf, float size=10f)
+        
+
+        private PointF markPoint(Graphics g, PointF pf, float size=1f)
         {
             g.DrawLine(blackPen, pf.X - (size / 2f), pf.Y, pf.X + (size / 2f), pf.Y);
             g.DrawLine(blackPen, pf.X, pf.Y - (size / 2f), pf.X, pf.Y + (size / 2f));
@@ -71,7 +80,7 @@ namespace Graphing_Demo
 
         private void GraphForm_Resize(object sender, EventArgs e)
         {
-            Invalidate();
+            RecalculateGraphBounds();
         }
 
         public bool alreadyClosing = false;
@@ -89,74 +98,94 @@ namespace Graphing_Demo
 
         private void startDatePicker_ValueChanged(object sender, EventArgs e)
         {
+            Debug.WriteLine("Start date picker change to : {0}", startDatePicker.Value);
             endDatePicker.MinDate = startDatePicker.Value;
+            RecalculateGraphBounds();
         }
 
-        private void GraphForm_Load(object sender, EventArgs e)
+        private void endDatePicker_ValueChanged(object sender, EventArgs e)
         {
-
+            RecalculateGraphBounds();
+            Debug.WriteLine("end change");
         }
 
         private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Transform = tTransform.matrix;
-            PointF pf = new PointF(-25f, -25f);
-
-            pf = markPoint(e.Graphics, pf, 60f);
-
-
             //drawGrid(e.Graphics);
 
             //drawAxes(e);
 
-            drawCircle(e.Graphics, blackPen, origin, 25f);
-            //e.Graphics.DrawEllipse(blackPen, -25f, 25f, 50f, -50f);
+            //drawCircle(e.Graphics, blackPen, new PointF(tTransform.X1 +(tTransform.xRange/2), tTransform.Y1 + (tTransform.yRange/2)) , 50f);
+            drawGraph(e.Graphics);
+            //e.Graphics.DrawEllipse(blackPen, -25f, 25f, 50f, -50f);     
 
-            drawCircle(e.Graphics, redPen, origin, 10f);
+        }
 
-            PointF p100100 = new PointF(100f, 100f);
-            PointF p500500 = new PointF(500f, 500f);
-
-            e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkRed, p100100);
-            markPoint(e.Graphics, p100100);
-
-            e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkRed, p500500);
-            markPoint(e.Graphics, p500500);
-
-            /*
-            Pen graphPen = new Pen(Color.Black, 3);
-
-            List<PointF> pointFL = new List<PointF>();
-
-            for (float x = tTransform.X1; x < tTransform.X2; x += 0.01f)
+        private void drawGraph(Graphics graphics)
+        {
+            if (radioCandleSticks.Checked)
             {
-                float y = (float)Math.Sin(x * 0.02) * x * 0.5f;
-                pointFL.Add(new PointF(x, y));
+                DrawCandleSticks(graphics);
             }
 
-            e.Graphics.DrawLines(graphPen, pointFL.ToArray());
+            if (radioCloseGraph.Checked)
+            {
+                DrawClose(graphics);
+            }
 
-            e.Graphics.Transform = identityMatrix;
-
-            e.Graphics.DrawString("y = sin(x*0.02)*x*0.5", tnrFont20, Brushes.RoyalBlue, tTransform.convertToUV(-90f, -40f));
-
-            e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkRed, p100100);
-            e.Graphics.DrawString("(200,200)", tnrFont, Brushes.DarkRed, p200200);
-            /*
-            e.Graphics.DrawString("(100,100)", arialFont, Brushes.DarkBlue, tTransform.convertToUV(p100100));
-            markPoint(e.Graphics, tTransform.convertToUV(p100100), 20f);
-            e.Graphics.DrawString("(200,200)", tnrFont, Brushes.DarkBlue, tTransform.convertToUV(p200200));
-            markPoint(e.Graphics, tTransform.convertToUV(p200200), 20f);
-            */
-            
-
+            if (radioQuadGraph.Checked)
+            {
+                DrawQuad(graphics);
+            }
         }
 
-        private void startDatePicker_ValueChanged_1(object sender, EventArgs e)
+        private void DrawQuad(Graphics graphics)
         {
-            Debug.WriteLine("start change");
-           // RecalculateGraphBounds();
+            throw new NotImplementedException();
         }
+
+        private void DrawClose(Graphics graphics)
+        {
+            
+            if (currentRangeData.Count > 0)
+            {
+                List<PointF> vertices = new List<PointF>();
+                for(int i = 0; i < currentRangeData.Count; i++)
+                {
+                    
+                    vertices.Add(new PointF(i, currentRangeData[i].Close));
+                    markPoint(graphics, new PointF(i, currentRangeData[i].Close));
+                    StringFormat strf = new StringFormat(StringFormatFlags.FitBlackBox | StringFormatFlags.DirectionVertical);
+                    graphics.ResetTransform();
+                    graphics.DrawString(currentRangeData[i].Date.ToShortDateString(), arialFont, redPen.Brush, new PointF(i* (graphPanel.ClientRectangle.Width / currentRangeData.Count), 0), strf);
+                    graphics.DrawLine(blackPen, new PointF(i * (graphPanel.ClientRectangle.Width / currentRangeData.Count), 0), new PointF(i * (graphPanel.ClientRectangle.Width / currentRangeData.Count), 15f));
+                    graphics.Transform = tTransform.matrix;
+                    
+                    
+                }
+                DumpDrawPoints(vertices);
+                Pen p = new Pen(Color.Red, .05f);
+                graphics.DrawLines(p, vertices.ToArray());
+                
+            }
+        }
+
+        private void DumpDrawPoints(List<PointF> vertices)
+        {
+            Debug.WriteLine("***********************************");
+            foreach (var p in vertices)
+            {
+                Debug.WriteLine("{0}, {1}", p.X, p.Y);
+            }
+            Debug.WriteLine("***********************************");
+        }
+
+        private void DrawCandleSticks(Graphics graphics)
+        {
+            throw new NotImplementedException();
+        }
+
 
         private void RecalculateGraphBounds()
         {
@@ -169,20 +198,43 @@ namespace Graphing_Demo
                 float u2 = subWinRect.X + subWinRect.Width;
                 float v2 = subWinRect.Y + subWinRect.Height;
 
-                float x1 = startDatePicker.Value.DayOfYear; // graphControlForm.minX;
-                float y1 = 0; //graphControlForm.maxY;
-                float x2 = endDatePicker.Value.DayOfYear; //graphControlForm.maxX;
-                float y2 = 1000; //graphControlForm.minY;
+                //calculate max and min of graph
+                currentRangeData = stockSymbolData.Data.Where(d => (d.Date <= endDatePicker.Value) && (d.Date >= startDatePicker.Value)).ToList();
+                currentRangeData.Reverse();
+                Debug.WriteLine("{0}, {1}", startDatePicker.Value, endDatePicker.Value);
+                DumpSymbolData(currentRangeData);
+                if (currentRangeData.Count > 0)
+                {
+                    float rangeCloseMax = currentRangeData.Max(entry => entry.Close);
+                    float rangeCloseMin = currentRangeData.Min(entry => entry.Close);
+                    Debug.WriteLine("Close max = {0}, close min = {1}", rangeCloseMax, rangeCloseMin);
 
-                tTransform.setupBoundries(u1, v1, u2, v2, x1, y1, x2, y2);
-                tTransform.setupMatrix(false);
+                    float x1 = 0; // graphControlForm.minX;
+                    float y1 = rangeCloseMin * .95f ; //graphControlForm.maxY;
+                    float x2 = currentRangeData.Count; //graphControlForm.maxX;
+                    float y2 = rangeCloseMax * 1.05f; //graphControlForm.minY;
+
+                    tTransform.setupBoundries(u1, v1, u2, v2, x1, y1, x2, y2);
+                    tTransform.setupMatrix(false);
+                }
+
             }
         }
 
-        private void endDatePicker_ValueChanged(object sender, EventArgs e)
+        private void DumpSymbolData(List<SymbolDataEntry> rangeSymbols)
         {
-           // RecalculateGraphBounds();
-            Debug.WriteLine("end change");
+            Debug.WriteLine("==============================");
+            foreach (var data in rangeSymbols)
+            {
+                Debug.WriteLine("Date = {0}, close= {1}", data.Date, data.Close);
+            }
+            Debug.WriteLine("==============================");
         }
+
+        private void invalidateTimer_Tick(object sender, EventArgs e)
+        {
+           graphPanel.Invalidate();
+        }
+
     }
 }
