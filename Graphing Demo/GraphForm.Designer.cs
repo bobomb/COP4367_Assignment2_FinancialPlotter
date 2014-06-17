@@ -55,6 +55,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
+            this.splitContainer1.Panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.splitContainer1_Panel1_MouseMove);
             // 
             // splitContainer1.Panel2
             // 
@@ -65,8 +66,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.endDatePicker);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(this.startDatePicker);
-            this.splitContainer1.Size = new System.Drawing.Size(776, 464);
-            this.splitContainer1.SplitterDistance = 474;
+            this.splitContainer1.Size = new System.Drawing.Size(833, 501);
+            this.splitContainer1.SplitterDistance = 531;
             this.splitContainer1.TabIndex = 0;
             // 
             // radioCloseGraph
@@ -146,7 +147,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(776, 464);
+            this.ClientSize = new System.Drawing.Size(833, 501);
             this.Controls.Add(this.splitContainer1);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(2);

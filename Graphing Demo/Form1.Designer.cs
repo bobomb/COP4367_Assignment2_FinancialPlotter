@@ -44,7 +44,7 @@
             this.btnGraphTickerSymbol});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(981, 41);
+            this.toolStrip1.Size = new System.Drawing.Size(929, 41);
             this.toolStrip1.Stretch = true;
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
@@ -76,7 +76,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(981, 422);
+            this.ClientSize = new System.Drawing.Size(929, 651);
             this.Controls.Add(this.toolStrip1);
             this.IsMdiContainer = true;
             this.Margin = new System.Windows.Forms.Padding(2);
