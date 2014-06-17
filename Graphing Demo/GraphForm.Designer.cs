@@ -138,7 +138,7 @@
             // invalidateTimer
             // 
             this.invalidateTimer.Enabled = true;
-            this.invalidateTimer.Interval = 10;
+            this.invalidateTimer.Interval = 1000;
             this.invalidateTimer.Tick += new System.EventHandler(this.invalidateTimer_Tick);
             // 
             // GraphForm

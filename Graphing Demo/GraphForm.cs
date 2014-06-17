@@ -36,7 +36,8 @@ namespace Graphing_Demo
         {
             stockSymbolData = data;
             InitializeComponent();
-            
+            graphPanel = splitContainer1.Panel1;
+
             startDatePicker.MinDate = stockSymbolData.Data.Last().Date;
             startDatePicker.MaxDate = stockSymbolData.Data.First().Date;
             endDatePicker.MinDate = startDatePicker.MinDate.AddDays(1);
@@ -47,9 +48,10 @@ namespace Graphing_Demo
             //change name
             this.Text = data.TickerName + " - " + data.CompanyName;
             IsInitialized = true;
+            
             RecalculateGraphBounds();
 
-            graphPanel = splitContainer1.Panel1;
+            
         }
 
 
@@ -155,20 +157,33 @@ namespace Graphing_Demo
                 {
                     
                     vertices.Add(new PointF(i, currentRangeData[i].Close));
-                    markPoint(graphics, new PointF(i, currentRangeData[i].Close));
                     StringFormat strf = new StringFormat(StringFormatFlags.FitBlackBox | StringFormatFlags.DirectionVertical);
                     graphics.ResetTransform();
+                    //draw X axis
                     graphics.DrawString(currentRangeData[i].Date.ToShortDateString(), arialFont, redPen.Brush, new PointF(i* (graphPanel.ClientRectangle.Width / currentRangeData.Count), 0), strf);
                     graphics.DrawLine(blackPen, new PointF(i * (graphPanel.ClientRectangle.Width / currentRangeData.Count), 0), new PointF(i * (graphPanel.ClientRectangle.Width / currentRangeData.Count), 15f));
-                    graphics.Transform = tTransform.matrix;
+                    //draw Y axis
+
+                   graphics.Transform = tTransform.matrix;
                     
                     
                 }
                 DumpDrawPoints(vertices);
                 Pen p = new Pen(Color.Red, .05f);
                 graphics.DrawLines(p, vertices.ToArray());
-                
             }
+            graphics.ResetTransform();
+            for (int j = 0; j < 12; j++)
+            {
+                float val = (graphPanel.ClientRectangle.Height / tTransform.yRange);
+                float div = graphPanel.ClientRectangle.Height / 12;
+                float graphVal = j*(tTransform.yRange / 12) + tTransform.Y1; //the value of the graph at this markpoint
+                float axesDrawVal = div * j;
+
+                Debug.WriteLine("draw value {0} at point {1} , {2}", graphVal, 0,graphPanel.ClientRectangle.Height- axesDrawVal);
+                graphics.DrawString(graphVal.ToString(), arialFont, redPen.Brush, new PointF(0f, graphPanel.ClientRectangle.Height-axesDrawVal));
+            }
+            graphics.Transform = tTransform.matrix;
         }
 
         private void DumpDrawPoints(List<PointF> vertices)
@@ -210,15 +225,16 @@ namespace Graphing_Demo
                     Debug.WriteLine("Close max = {0}, close min = {1}", rangeCloseMax, rangeCloseMin);
 
                     float x1 = 0; // graphControlForm.minX;
-                    float y1 = rangeCloseMin * .95f ; //graphControlForm.maxY;
+                    float y1 = rangeCloseMin *.95f; //graphControlForm.maxY;
                     float x2 = currentRangeData.Count; //graphControlForm.maxX;
-                    float y2 = rangeCloseMax * 1.05f; //graphControlForm.minY;
+                    float y2 = rangeCloseMax *1.05f; //graphControlForm.minY;
 
                     tTransform.setupBoundries(u1, v1, u2, v2, x1, y1, x2, y2);
                     tTransform.setupMatrix(false);
                 }
 
             }
+            graphPanel.Invalidate();
         }
 
         private void DumpSymbolData(List<SymbolDataEntry> rangeSymbols)
@@ -233,7 +249,7 @@ namespace Graphing_Demo
 
         private void invalidateTimer_Tick(object sender, EventArgs e)
         {
-           graphPanel.Invalidate();
+           //graphPanel.Invalidate();
         }
 
     }
