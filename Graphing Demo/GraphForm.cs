@@ -20,19 +20,15 @@ namespace Graphing_Demo
         T_Transform tTransform = new T_Transform();
         Panel graphPanel;
         List<SymbolDataEntry> currentRangeData = new List<SymbolDataEntry>();
-        ToolTip graphToolTip = new ToolTip();
-
-
+        ToolTip graphToolTip = new ToolTip();             
+        Matrix identityMatrix = new Matrix();
         Pen lightGrayPen = new Pen(Color.LightGray, 0.5f);
         Pen blackPen = new Pen(Color.Black, 1f);
         Pen redPen = new Pen(Color.Red, 1f);
         Font arialFont = new Font("Arial", 10f);
         Font tnrFont = new Font("Times New Roman", 10);
         Font tnrFont20 = new Font("Times New Roman", 20);
-        Matrix identityMatrix = new Matrix();
 
-        PointF origin = new PointF();
-        
         public GraphForm(SymbolData data)
         {
             stockSymbolData = data;
@@ -61,35 +57,9 @@ namespace Graphing_Demo
             g.DrawEllipse(pen, center.X - radius, center.Y - radius, radius * 2f, radius * 2f);
         }
 
-        
-
-        private PointF markPoint(Graphics g, PointF pf, float size=1f)
-        {
-            g.DrawLine(blackPen, pf.X - (size / 2f), pf.Y, pf.X + (size / 2f), pf.Y);
-            g.DrawLine(blackPen, pf.X, pf.Y - (size / 2f), pf.X, pf.Y + (size / 2f));
-            g.DrawEllipse(blackPen, pf.X - (size / 4f), pf.Y - (size / 4f), (size / 2f), (size / 2f));
-            return pf;
-        }
-
-
-        //private void drawAxes(PaintEventArgs e)
-        //{
-        //    if (graphControlForm.showAxes)
-        //    {
-        //        e.Graphics.DrawLine(blackPen, 0f, graphControlForm.maxY, 0f, graphControlForm.minY);
-        //        e.Graphics.DrawLine(blackPen, graphControlForm.maxX, 0f, graphControlForm.minX, 0f);
-        //    }
-        //}
-
         private void GraphForm_Resize(object sender, EventArgs e)
         {
             RecalculateGraphBounds();
-        }
-
-        public bool alreadyClosing = false;
-
-        private void GraphForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
         }
 
         private void GraphForm_MouseClick(object sender, MouseEventArgs e)
@@ -145,9 +115,100 @@ namespace Graphing_Demo
 
         private void DrawQuad(Graphics graphics)
         {
-            throw new NotImplementedException();
+            Pen HighPen = new Pen(Color.Green, .05f);
+            Pen LowPen = new Pen(Color.Red, .05f);
+            Pen OpenPen = new Pen(Color.Blue, .05f);
+            Pen ClosePen = new Pen(Color.Black, .05f);
+
+            if (currentRangeData.Count > 0)
+            {
+                savedVertices.Clear();
+                List<PointF> vertices = new List<PointF>();
+                DrawXAxis(graphics);
+                DrawYAxis(graphics);
+                //high
+                for (int i = 0; i < currentRangeData.Count; i++)
+                    vertices.Add(new PointF(i, currentRangeData[i].High));
+                DrawLineGraph(graphics, vertices.ToArray(), HighPen);
+                savedVertices.AddRange(vertices);
+                vertices.Clear();
+                //low
+                for (int i = 0; i < currentRangeData.Count; i++)
+                    vertices.Add(new PointF(i, currentRangeData[i].Low));
+                DrawLineGraph(graphics, vertices.ToArray(), LowPen);
+                savedVertices.AddRange(vertices);
+                vertices.Clear();
+                //open
+                for (int i = 0; i < currentRangeData.Count; i++)
+                    vertices.Add(new PointF(i, currentRangeData[i].Open));
+                DrawLineGraph(graphics, vertices.ToArray(), OpenPen);
+                savedVertices.AddRange(vertices);
+                vertices.Clear();
+                //close
+                for (int i = 0; i < currentRangeData.Count; i++)
+                    vertices.Add(new PointF(i, currentRangeData[i].Close));
+                DrawLineGraph(graphics, vertices.ToArray(), ClosePen);
+                savedVertices.AddRange(vertices);
+                vertices.Clear();                
+            }
+        }
+
+        private void DrawLineGraph(Graphics graphics, PointF[] points, Pen drawPen)
+        {
+            graphics.Transform = tTransform.matrix;
+            graphics.DrawLines(drawPen, points.ToArray());
+            graphics.ResetTransform();
+            foreach (PointF pf in points)
+            {
+                drawCircle(graphics, drawPen, GraphToScreen(pf), 5);
+            }
+            graphics.Transform = tTransform.matrix;
         }
         List<PointF> savedVertices = new List<PointF>();
+        private void DrawCandleSticks(Graphics graphics)
+        {
+            Pen WhiskerPenHigh = new Pen(Color.Green, .05f);
+            Pen WhiskerPenLow = new Pen(Color.Red, .05f);
+            Pen BearPen = new Pen(Color.Red, .05f);
+            Pen ConnectionPen = new Pen(Color.Black, .05f);
+            Pen BullPen = new Pen(Color.Green, .05f);
+            if (currentRangeData.Count > 0)
+            {
+                List<PointF> vertices = new List<PointF>();
+                DrawXAxis(graphics);
+                DrawYAxis(graphics);
+                for (int i = 0; i < currentRangeData.Count; i++)
+                {
+                    //vertices.Add(new PointF(i, currentRangeData[i].Close));
+                    //first draw the whisker at the top (high)
+                    graphics.DrawLine(WhiskerPenHigh, (float)i - .15f, currentRangeData[i].High, (float)i + .15f, currentRangeData[i].High);
+                    //then whisker at the bottom (low)
+                    graphics.DrawLine(WhiskerPenLow, (float)i - .15f, currentRangeData[i].Low, (float)i + .15f, currentRangeData[i].Low);
+                    
+                    //next the box and connecting lines
+                    if (currentRangeData[i].Open > currentRangeData[i].Close)
+                    {
+                        graphics.DrawRectangle(BearPen, (float)i - .25f, currentRangeData[i].Close, .5f, currentRangeData[i].Open - currentRangeData[i].Close);
+                        graphics.DrawLine(ConnectionPen, i, currentRangeData[i].High, i, currentRangeData[i].Open);
+                        graphics.DrawLine(ConnectionPen, i, currentRangeData[i].Low, i, currentRangeData[i].Close);
+                    }
+                    else
+                    {
+                        graphics.DrawRectangle(BullPen, (float)i - .25f, currentRangeData[i].Open, .5f, currentRangeData[i].Close - currentRangeData[i].Open);
+                        graphics.DrawLine(ConnectionPen, i, currentRangeData[i].High, i, currentRangeData[i].Close);
+                        graphics.DrawLine(ConnectionPen, i, currentRangeData[i].Low, i, currentRangeData[i].Open);
+                    }
+
+                    vertices.Add(new PointF(i, (currentRangeData[i].Open + currentRangeData[i].Close) / 2f));                   
+                    
+
+                }
+
+                savedVertices = vertices;
+                //DumpDrawPoints(vertices);
+                graphics.Transform = tTransform.matrix;
+            }
+        }
         private void DrawClose(Graphics graphics)
         {
             
@@ -161,8 +222,8 @@ namespace Graphing_Demo
                     vertices.Add(new PointF(i, currentRangeData[i].Close));         
                 }
                 savedVertices = vertices;
-                DumpDrawPoints(vertices);
-                Pen p = new Pen(Color.Red, .05f);
+                //DumpDrawPoints(vertices);
+                Pen p = new Pen(Color.Black, .05f);
                 graphics.DrawLines(p, vertices.ToArray());
                 graphics.ResetTransform();
 
@@ -178,33 +239,39 @@ namespace Graphing_Demo
 
         private void DrawYAxis(Graphics graphics)
         {
-            graphics.ResetTransform();
-            for (int j = 0; j < 11; j++)
+            if (checkDrawAxes.Checked)
             {
-                float val = (graphPanel.ClientRectangle.Height / tTransform.yRange);
-                float div = graphPanel.ClientRectangle.Height / 12;
-                float graphVal = j * (tTransform.yRange / 12) + tTransform.Y2; //the value of the graph at this markpoint
-                float axesDrawVal = div * j;
+                graphics.ResetTransform();
+                for (int j = 0; j < 11; j++)
+                {
+                    float val = (graphPanel.ClientRectangle.Height / tTransform.yRange);
+                    float div = graphPanel.ClientRectangle.Height / 12;
+                    float graphVal = j * (tTransform.yRange / 12) + tTransform.Y2; //the value of the graph at this markpoint
+                    float axesDrawVal = div * j;
 
-                Debug.WriteLine("draw value {0} at point {1} , {2}", graphVal, 0, graphPanel.ClientRectangle.Height - axesDrawVal);
-                graphics.DrawString(graphVal.ToString(), arialFont, redPen.Brush, new PointF(0f, graphPanel.ClientRectangle.Height - axesDrawVal));
+                    //Debug.WriteLine("draw value {0} at point {1} , {2}", graphVal, 0, graphPanel.ClientRectangle.Height - axesDrawVal);
+                    graphics.DrawString(graphVal.ToString(), arialFont, redPen.Brush, new PointF(0f, graphPanel.ClientRectangle.Height - axesDrawVal));
+                }
+                graphics.Transform = tTransform.matrix;
             }
-            graphics.Transform = tTransform.matrix;
         }
 
         private void DrawXAxis(Graphics graphics)
         {
-            graphics.ResetTransform();
-            for (int i = 0; i < currentRangeData.Count; i++)
+            if (checkDrawAxes.Checked)
             {
-                StringFormat strf = new StringFormat(StringFormatFlags.FitBlackBox | StringFormatFlags.DirectionVertical);
-                
-                //draw X axis
-                graphics.DrawString(currentRangeData[i].Date.ToShortDateString(), arialFont, redPen.Brush, new PointF(i * (graphPanel.ClientRectangle.Width / currentRangeData.Count), 0), strf);
-                graphics.DrawLine(blackPen, new PointF(i * (graphPanel.ClientRectangle.Width / currentRangeData.Count), 0), new PointF(i * (graphPanel.ClientRectangle.Width / currentRangeData.Count), 15f));
-                //draw Y axis
+                graphics.ResetTransform();
+                for (int i = 0; i < currentRangeData.Count; i++)
+                {
+                    StringFormat strf = new StringFormat(StringFormatFlags.FitBlackBox | StringFormatFlags.DirectionVertical);
+
+                    //draw X axis
+                    graphics.DrawString(currentRangeData[i].Date.ToShortDateString(), arialFont, redPen.Brush, new PointF(i * (graphPanel.ClientRectangle.Width / currentRangeData.Count), 0), strf);
+                    graphics.DrawLine(blackPen, new PointF(i * (graphPanel.ClientRectangle.Width / currentRangeData.Count), 0), new PointF(i * (graphPanel.ClientRectangle.Width / currentRangeData.Count), 15f));
+                    //draw Y axis
+                }
+                graphics.Transform = tTransform.matrix;
             }
-            graphics.Transform = tTransform.matrix;
 
         }
 
@@ -231,12 +298,6 @@ namespace Graphing_Demo
             Debug.WriteLine("***********************************");
         }
 
-        private void DrawCandleSticks(Graphics graphics)
-        {
-            throw new NotImplementedException();
-        }
-
-
         private void RecalculateGraphBounds()
         {
             if (IsInitialized)
@@ -262,7 +323,7 @@ namespace Graphing_Demo
                     float x1 = 0; // graphControlForm.minX;
                     float y2 = rangeCloseMin *.95f; //graphControlForm.maxY;
                     float x2 = currentRangeData.Count; //graphControlForm.maxX;
-                    float y1 = rangeCloseMax *1.05f; //graphControlForm.minY;
+                    float y1 = rangeCloseMax *1.1f; //graphControlForm.minY;
 
                     tTransform.setupBoundries(u1, v1, u2, v2, x1, y1, x2, y2);
                     tTransform.setupMatrix(false);
@@ -289,6 +350,7 @@ namespace Graphing_Demo
 
         private void splitContainer1_Panel1_MouseMove(object sender, MouseEventArgs e)
         {
+            bool show = false;
             if (savedVertices.Count > 0)
             {
                 int x = e.Location.X;
@@ -302,11 +364,14 @@ namespace Graphing_Demo
                     {
                         
                         graphToolTip.Show(currentRangeData[(int)p.X].Date.ToShortDateString() + " " + p.Y, this, e.Location.X, e.Location.Y);
-                        return;
+                        show = true;
+                        break;
                     }
                 }
             }
-            graphToolTip.Hide(this);
+            if(!show)
+                graphToolTip.Hide(this);
+            
         }
 
         private bool isInCircle(PointF circle, PointF p, int radius)
@@ -315,6 +380,16 @@ namespace Graphing_Demo
                 p.X >= (circle.X - radius) &&
                 p.Y <= (circle.Y + radius) &&
                 p.Y >= (circle.Y - radius));
+        }
+
+        private void checkDrawAxes_CheckedChanged(object sender, EventArgs e)
+        {
+            RecalculateGraphBounds();
+        }
+
+        private void radioGraph_CheckedChanged(object sender, EventArgs e)
+        {
+            RecalculateGraphBounds();
         }
     }
 }

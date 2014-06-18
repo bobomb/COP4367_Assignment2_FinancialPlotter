@@ -32,6 +32,7 @@
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.txtTickerSymbol = new System.Windows.Forms.ToolStripTextBox();
             this.btnGraphTickerSymbol = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,7 +42,8 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.txtTickerSymbol,
-            this.btnGraphTickerSymbol});
+            this.btnGraphTickerSymbol,
+            this.toolStripLabel2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(929, 41);
@@ -52,8 +54,8 @@
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(131, 38);
-            this.toolStripLabel1.Text = "Ticker Symbol to Graph";
+            this.toolStripLabel1.Size = new System.Drawing.Size(161, 38);
+            this.toolStripLabel1.Text = "Enter Ticker Symbol to Graph";
             // 
             // txtTickerSymbol
             // 
@@ -71,6 +73,12 @@
             this.btnGraphTickerSymbol.Size = new System.Drawing.Size(47, 47);
             this.btnGraphTickerSymbol.Text = "toolStripButton1";
             this.btnGraphTickerSymbol.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(198, 38);
+            this.toolStripLabel2.Text = "<- Press after entering ticker symbol";
             // 
             // Form1
             // 
@@ -94,6 +102,7 @@
         private System.Windows.Forms.ToolStripButton btnGraphTickerSymbol;
         private System.Windows.Forms.ToolStripTextBox txtTickerSymbol;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
     }
 }
 

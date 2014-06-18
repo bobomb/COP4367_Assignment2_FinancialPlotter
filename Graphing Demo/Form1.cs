@@ -16,17 +16,19 @@ namespace Graphing_Demo
         {
             InitializeComponent();
         }
-
+        //btnGraphTickerSymbol
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             if (txtTickerSymbol.Text.Length > 0)
             {
                 //grab the ticker symbol data
-                //SymbolData data = SymbolDataGrabber.GetSymbolData(txtTickerSymbol.Text);
-               // if (data != null)
+                Cursor.Current = Cursors.WaitCursor;
+                SymbolData data = SymbolDataGrabber.GetSymbolData(txtTickerSymbol.Text);
+                Cursor.Current = Cursors.Default;
+                if (data != null)
                 {
-                    //GraphForm gForm = new GraphForm(data);
-                    GraphForm gForm = new GraphForm(SymbolDataGrabber.GetTestData());
+                    GraphForm gForm = new GraphForm(data);
+                    //GraphForm gForm = new GraphForm(SymbolDataGrabber.GetTestData());
                     gForm.MdiParent = this;
                     gForm.Show();
 

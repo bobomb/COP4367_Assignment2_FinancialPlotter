@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.checkDrawAxes = new System.Windows.Forms.CheckBox();
             this.radioCloseGraph = new System.Windows.Forms.RadioButton();
             this.radioQuadGraph = new System.Windows.Forms.RadioButton();
             this.radioCandleSticks = new System.Windows.Forms.RadioButton();
@@ -38,6 +39,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.startDatePicker = new System.Windows.Forms.DateTimePicker();
             this.invalidateTimer = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -59,6 +65,12 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.label3);
+            this.splitContainer1.Panel2.Controls.Add(this.button4);
+            this.splitContainer1.Panel2.Controls.Add(this.button3);
+            this.splitContainer1.Panel2.Controls.Add(this.button2);
+            this.splitContainer1.Panel2.Controls.Add(this.button1);
+            this.splitContainer1.Panel2.Controls.Add(this.checkDrawAxes);
             this.splitContainer1.Panel2.Controls.Add(this.radioCloseGraph);
             this.splitContainer1.Panel2.Controls.Add(this.radioQuadGraph);
             this.splitContainer1.Panel2.Controls.Add(this.radioCandleSticks);
@@ -69,6 +81,19 @@
             this.splitContainer1.Size = new System.Drawing.Size(833, 501);
             this.splitContainer1.SplitterDistance = 531;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // checkDrawAxes
+            // 
+            this.checkDrawAxes.AutoSize = true;
+            this.checkDrawAxes.Checked = true;
+            this.checkDrawAxes.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkDrawAxes.Location = new System.Drawing.Point(18, 164);
+            this.checkDrawAxes.Name = "checkDrawAxes";
+            this.checkDrawAxes.Size = new System.Drawing.Size(77, 17);
+            this.checkDrawAxes.TabIndex = 11;
+            this.checkDrawAxes.Text = "Draw Axes";
+            this.checkDrawAxes.UseVisualStyleBackColor = true;
+            this.checkDrawAxes.CheckedChanged += new System.EventHandler(this.checkDrawAxes_CheckedChanged);
             // 
             // radioCloseGraph
             // 
@@ -81,6 +106,7 @@
             this.radioCloseGraph.TabStop = true;
             this.radioCloseGraph.Text = "Only Close";
             this.radioCloseGraph.UseVisualStyleBackColor = true;
+            this.radioCloseGraph.CheckedChanged += new System.EventHandler(this.radioGraph_CheckedChanged);
             // 
             // radioQuadGraph
             // 
@@ -91,6 +117,7 @@
             this.radioQuadGraph.TabIndex = 9;
             this.radioQuadGraph.Text = "Hi/Low/Open/Close";
             this.radioQuadGraph.UseVisualStyleBackColor = true;
+            this.radioQuadGraph.CheckedChanged += new System.EventHandler(this.radioGraph_CheckedChanged);
             // 
             // radioCandleSticks
             // 
@@ -101,6 +128,7 @@
             this.radioCandleSticks.TabIndex = 8;
             this.radioCandleSticks.Text = "Candle sticks";
             this.radioCandleSticks.UseVisualStyleBackColor = true;
+            this.radioCandleSticks.CheckedChanged += new System.EventHandler(this.radioGraph_CheckedChanged);
             // 
             // label2
             // 
@@ -142,6 +170,61 @@
             this.invalidateTimer.Interval = 1000;
             this.invalidateTimer.Tick += new System.EventHandler(this.invalidateTimer_Tick);
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Red;
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(18, 266);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(113, 35);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Low";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Green;
+            this.button2.Enabled = false;
+            this.button2.Location = new System.Drawing.Point(137, 266);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(113, 35);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "High";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.Blue;
+            this.button3.Enabled = false;
+            this.button3.Location = new System.Drawing.Point(18, 307);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(113, 35);
+            this.button3.TabIndex = 14;
+            this.button3.Text = "Open";
+            this.button3.UseVisualStyleBackColor = false;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.Black;
+            this.button4.Enabled = false;
+            this.button4.ForeColor = System.Drawing.Color.White;
+            this.button4.Location = new System.Drawing.Point(137, 307);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(113, 35);
+            this.button4.TabIndex = 15;
+            this.button4.Text = "Close";
+            this.button4.UseVisualStyleBackColor = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(18, 230);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(80, 24);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "Legend:";
+            // 
             // GraphForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -153,7 +236,6 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GraphForm";
             this.Text = "GraphForm";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GraphForm_FormClosing);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GraphForm_MouseClick);
             this.Resize += new System.EventHandler(this.GraphForm_Resize);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -175,5 +257,11 @@
         private System.Windows.Forms.RadioButton radioQuadGraph;
         private System.Windows.Forms.RadioButton radioCandleSticks;
         private System.Windows.Forms.Timer invalidateTimer;
+        private System.Windows.Forms.CheckBox checkDrawAxes;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label3;
     }
 }
